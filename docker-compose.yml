@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: streambox
+      POSTGRES_USER: streambox
+      POSTGRES_PASSWORD: change-me-local
+    ports:
+      - "5432:5432"
+    volumes:
+      - streambox_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U streambox -d streambox"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  streambox_db:
